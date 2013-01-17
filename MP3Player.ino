@@ -1,7 +1,5 @@
-
-
-// simple rMP3 playback, plays for 5 seconds, and then stop for 5 seconds, looping this pattern continuously
-// open serial terminal at 9600 to view playback status
+    // This sketch randomly plays all the songs in a folder. 
+    //You can control the volume, play/pause/stop/next, and ff/rew using serial input (from the IDE). 
  
     #include "RogueMP3.h"
     #include <SoftwareSerial.h>
