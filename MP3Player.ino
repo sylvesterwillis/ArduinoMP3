@@ -6,11 +6,14 @@
     #include "RogueMP3.h"
     #include <SoftwareSerial.h>
     #include "RogueSD.h"
+    #include <LiquidCrystal.h>
      
     SoftwareSerial rmp3_serial(6, 7);
      
     RogueMP3 rmp3(rmp3_serial);
     RogueSD filecommands(rmp3_serial);
+    
+    LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
      
     int numberOfSongs;
     int lastSong;
@@ -23,7 +26,11 @@
     {
       Serial.begin(9600);
      
-      Serial.println("Merry Xmas!");
+      Serial.println("Setting up lcd and mp3 player.");
+      
+      lcd.clear();
+      // set up the LCD's number of columns and rows:
+      lcd.begin(16, 2);
      
       rmp3_serial.begin(9600);
      
@@ -44,8 +51,6 @@
      
       lastSong = -1;
     }
-     
-     
      
     void playNextSong()
     {
@@ -89,6 +94,10 @@
      
         Serial.print("Playing: ");
         Serial.println(path);
+     
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(filename);
      
         lastSong = nextSong;
       }
@@ -165,31 +174,6 @@
           case 'n':
             playNextSong();
             playing = 1;
-            break;
-     
-          case 'e':
-            if(boostOn)
-            {
-              rmp3.setboost(0);
-              boostOn = false;
-            }
-            else
-            {
-              rmp3.setboost(8, 6, 7, 3);
-              boostOn = true;
-            }
-            break;
-     
-          case 'a':
-            // jump back 5 seconds
-            newtime = playinfo.position - 5;
-            if (newtime < 0) newtime = 0;
-            rmp3.jump(newtime);
-            break;
-     
-          case 'd':
-            // jump forward 5 seconds
-            rmp3.jump(playinfo.position + 5);
             break;
      
           case 'k':
